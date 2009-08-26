@@ -31,6 +31,18 @@ module Delayed
     self.min_priority = nil
     self.max_priority = nil
 
+    def self.max_attempts=(value)
+      silence_warnings do
+        const_set("MAX_ATTEMPTS", value)
+      end
+    end
+    
+    def self.max_run_time=(value)
+      silence_warnings do
+        const_set("MAX_RUN_TIME", value)
+      end
+    end
+
     # When a worker is exiting, make sure we don't have any locked jobs.
     def self.clear_locks!
       update_all("locked_by = null, locked_at = null", ["locked_by = ?", worker_name])
